@@ -605,12 +605,39 @@ public class PageAction {
     public String fanxiu_tongji() {
         return "static/weixiu_baoyang/fanxiu_tongji";
     }
+
     @RequestMapping("weixiugongshi_huizon")
     public String weixiugongshi_huizon() {
         return "static/weixiu_baoyang/weixiugongshi_huizon";
     }
+
     @RequestMapping("hetong_guanli")
     public String hetong_guanli() {
         return "static/hetong/hetong_guanli";
+    }
+
+    @RequestMapping("jichadengji")
+    public String jichadengji() {
+        return "static/jicha/jichadengji";
+    }
+
+    @RequestMapping("jichaheshi")
+    public String jichaheshi() {
+        return "static/jicha/jichaheshi";
+    }
+
+    @RequestMapping("jichachuli")
+    public String jichachuli() {
+        return "static/jicha/jichachuli";
+    }
+
+    @RequestMapping("weigui_jilu")
+    public String weigui_jilu() {
+        return "static/jicha/weigui_jilu";
+    }
+
+    @RequestMapping("weixiu_tongzhidan")
+    public String weixiu_tongzhidan() {
+        return "static/shigu/weixiu_tongzhidan";
     }
 }
