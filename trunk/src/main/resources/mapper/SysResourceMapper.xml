@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoplus.system.dao.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.nuoplus.system.model.SysResource">
+
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
+    <result column="sn" jdbcType="VARCHAR" property="sn" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, type, url, parent_id, parent_ids, sn, available ,icon
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+    delete from sys_resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoplus.system.model.SysResource">
+
+    insert into sys_resource (id, name, type, 
+      url, parent_id, parent_ids, 
+      sn, available)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{parentIds,jdbcType=VARCHAR}, 
+      #{sn,jdbcType=VARCHAR}, #{available,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoplus.system.model.SysResource" >
+
+    insert into sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="parentIds != null">
+        parent_ids,
+      </if>
+      <if test="sn != null">
+        sn,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="parentIds != null">
+        #{parentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null">
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoplus.system.model.SysResource" >
+
+    update sys_resource
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="parentIds != null">
+        parent_ids = #{parentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null">
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        available = #{available,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoplus.system.model.SysResource">
+
+    update sys_resource
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      parent_ids = #{parentIds,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      available = #{available,jdbcType=BIT},
+      icon = #{icon,jdbcType=BIT},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="findAll" parameterType="Integer"  resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from sys_resource
+  </select>
+  <select id="findResourceNames" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where id in (${_parameter})
+  </select>
+  <select id="findSubMenuByResourceId"  resultMap="BaseResultMap">
+    /*根节点*/
+    <if test="id==0">
+       SELECT sr.* FROM  sys_resource sr WHERE sr.parent_id=0
+    </if>
+   /* 非根节点*/
+    <if test="id!=0">
+      select sr.* from sys_resource sr,sys_resource ss where sr.parent_id =ss.id
+      AND  ss.id=#{id}
+    </if>
+    <if test="keyword != null and keyword!=''">
+      AND sr.name like  CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+    </if>
+    limit #{startRecords},#{pageSize}
+  </select>
+  <select id="countSubMenuByResourceId"  resultType="java.lang.Integer">
+    <if test="id==0">
+      SELECT COUNT(1) FROM  sys_resource sr WHERE sr.parent_id=0
+    </if>
+    <if test="id!=0">
+      select COUNT(1) from sys_resource sr,sys_resource ss where sr.parent_id =ss.id
+      AND  ss.id=#{id}
+    </if>
+    <if test="keyword != null and keyword!=''">
+      AND sr.name like  CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+  <delete id="batchDel" parameterType="String">
+
+    delete from sys_resource
+    where id in (${_parameter})
+  </delete>
+  <select id="findByparent" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where parent_id = #{id,jdbcType=BIGINT}
+    <if test="keyword != null and keyword!=''">
+      AND  name  like  CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+  <select id="findByparents" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where parent_id in (${_parameter})
+  </select>
+  <select id="findMenusByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            su.*
+        FROM
+            role_permission rp,sys_resource su
+        WHERE rp.resource_id = su.id
+        AND su.available=1
+        AND rp.role_id IN (
+            SELECT
+                sr.id
+            FROM
+                sys_user_roles sur,
+                sys_role sr
+            WHERE
+                user_id = #{id,jdbcType=BIGINT}
+            AND sur.role_id = sr.id
+        )
+        GROUP BY
+            su.id
+  </select>
+  <select id="getZtreeSubNodes" resultType="java.util.Map" parameterType="long">
+
+    select id,parent_id as pId,name
+    from sys_resource
+    where 1=1
+    /*id为0时为根节点*/
+    <if test="_parameter!=0">
+      and parent_ids LIKE  CONCAT('%/', #{id}, '/%')
+    </if>
+  </select>
+
+
+</mapper>

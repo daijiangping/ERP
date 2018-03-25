@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LeaveMapper">
+
+
+    <!-- 新增第二课堂流程申请表 -->
+    <insert id="saveLeave" parameterType="java.util.Map">
+      insert into flow_leave (
+        leaveId,
+        orderId,
+        operator,
+        swt,
+        day,
+        description,
+        startTime,
+        endTime,
+        createTime
+      )
+      values (
+        #{leaveId},
+        #{orderId},
+        #{operator},
+        #{swt},
+        #{day},
+        #{description},
+        #{startTime},
+        #{endTime},
+        now()
+      )
+    </insert>
+
+
+  <!-- 新增地图坐标 -->
+  <insert id="saveBdMap" parameterType="java.util.Map">
+    insert into baiduMap (
+    longitude,
+    latitude,
+    crtTime,
+    userName
+    )
+    values (
+    #{longitude},
+    #{latitude},
+    #{crtTime},
+    #{userName}
+    )
+  </insert>
+
+
+
+  <!-- 请假列表 -->
+  <select id="getLeaveList" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT * FROM flow_leave
+    WHERE operator = #{userName}
+     GROUP BY leaveId
+    ORDER BY createTime DESC
+    LIMIT #{start} , #{limit}
+  </select>
+
+  <!-- 获取请假列表count -->
+  <select id="getLeaveListCount" resultType="int" parameterType="java.util.Map">
+    SELECT COUNT(DISTINCT leaveId) FROM flow_leave WHERE operator = #{userName}
+  </select>
+
+  <!-- 请假详情查看 -->
+  <select id="getLeaveXq" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT a.* FROM
+      (select o.id orderId,p.display_Name displayName,o.order_State+'' orderState,t.display_Name taskName
+      from wf_hist_order o
+      LEFT JOIN wf_hist_task t ON o.id = t.order_Id
+      left join wf_process p on p.id = o.process_id
+      WHERE o.id IN(SELECT orderId FROM flow_leave WHERE leaveId = #{leaveId})
+      ORDER BY t.finish_Time DESC) a
+    GROUP BY a.orderId
+  </select>
+
+
+  <!-- 获取请假列表count -->
+  <select id="getDayByOrderId" resultType="string" parameterType="java.util.Map">
+    SELECT day FROM flow_leave WHERE orderId = #{orderId}
+  </select>
+
+</mapper>

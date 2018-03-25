@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoplus.system.dao.PushNodesMapper">
+    <!-- PushNodes的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_PushNodes_Map" type="com.nuoplus.system.model.PushNodes">
+        <result column="id" property="id" />
+        <result column="push_node" property="pushNode" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 数据库中表名为:push_nodes的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="push_nodes_Column">
+        push_nodes.id as id
+        ,push_nodes.push_node as push_node
+        ,push_nodes.status as status
+    </sql>
+
+    <!--获得类名为:PushNodes对应的数据库表的数据总行数 -->
+    <select id="getPushNodesRowCount" resultType="java.lang.Long">
+        select count(id) from push_nodes
+    </select>
+    <!-- 获得类名为:PushNodes对应数据库中表的数据集合 -->
+    <select id="selectPushNodes" resultMap="result_PushNodes_Map">
+        select
+        <include refid="push_nodes_Column" />
+        from push_nodes
+    </select>
+
+    <!-- 获得一个PushNodes对象,以参数PushNodes对象中不为空的属性作为条件进行查询-->
+    <select id="selectPushNodesByObj" parameterType="com.nuoplus.system.model.PushNodes" resultMap="result_PushNodes_Map">
+        select
+        <include refid="push_nodes_Column" />
+        from push_nodes
+        <where>
+            <if test="status != null "> and push_nodes.status = #{status}</if>
+            <if test="pushNode != null "> and push_nodes.push_node = #{pushNode}</if>
+            <if test="id != null "> and push_nodes.id = #{id}</if>
+        </where>
+    </select>
+
+    <!-- 通过PushNodes的id获得对应数据库中表的数据对象-->
+    <select id="selectPushNodesById" parameterType="java.lang.Long" resultMap="result_PushNodes_Map">
+        select
+        <include refid="push_nodes_Column" />
+        from push_nodes
+        where push_nodes.id = #{id}
+    </select>
+
+    <!-- 将PushNodes插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertPushNodes" parameterType="com.nuoplus.system.model.PushNodes">
+        insert into push_nodes(id,push_node,status)
+        values(#{id},#{pushNode},#{status})
+    </insert>
+
+    <!-- 将PushNodes中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyPushNodes" parameterType="com.nuoplus.system.model.PushNodes">
+        insert into push_nodes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pushNode != null">push_node,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="pushNode != null"> #{pushNode},</if>
+            <if test="status != null"> #{status},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过PushNodes的id将数据库表中对应的数据删除-->
+    <delete id="deletePushNodesById" parameterType="java.lang.Long">
+        delete from push_nodes
+        where id = #{id}
+    </delete>
+
+    <!-- 通过PushNodes的id将PushNodes的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updatePushNodesById" parameterType="com.nuoplus.system.model.PushNodes">
+        update push_nodes set
+        push_node=#{pushNode}
+        ,status=#{status}
+        where id=#{id}
+    </update>
+
+    <!-- 通过PushNodes的id将PushNodes中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyPushNodesById" parameterType="com.nuoplus.system.model.PushNodes">
+        update push_nodes
+        <set>
+            <if test="pushNode != null">
+                push_node=#{pushNode},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findAll" resultMap="result_PushNodes_Map">
+        select
+        <include refid="push_nodes_Column"/>
+        from push_nodes where 1=1
+        <if test="keyword != null and keyword!=''">
+            AND push_node like CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+        </if>
+        limit #{startRecords},#{pageSize}
+    </select>
+    <select id="countPushNodes" resultType="java.lang.Integer">
+        select count(id) from push_nodes where 1=1
+        <if test="keyword != null and keyword!=''">
+            AND push_node like CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
+</mapper>

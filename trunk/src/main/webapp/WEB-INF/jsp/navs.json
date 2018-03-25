@@ -1,0 +1,477 @@
+{
+  "contentManagement": [
+    {
+      "title": "基本信息",
+      "icon": "icon-text",
+      "href": "page/news/newsList.html",
+      "spread": false,
+      "children": [
+        {
+          "title": "物资资料",
+          "icon": "&#xe61c;",
+          "href": "/page/product_list",
+          "spread": false
+        },
+        {
+          "title": "物资类别",
+          "icon": "&#xe61c;",
+          "href": "/page/product_classify_list",
+          "spread": false
+        },
+        {
+          "title": "仓库设置",
+          "icon": "&#xe61c;",
+          "href": "/page/cangku_list",
+          "spread": false
+        },
+        {
+          "title": "货位管理",
+          "icon": "&#xe61c;",
+          "href": "/page/huowei_list",
+          "spread": false
+        },
+        {
+          "title": "供应商类别设置",
+          "icon": "&#xe61c;",
+          "href": "/page/list_gongys_classify",
+          "spread": false
+        },
+        {
+          "title": "供应商资料",
+          "icon": "&#xe61c;",
+          "href": "/page/list_gongys",
+          "spread": false
+        },
+        {
+          "title": "综合信息设置",
+          "icon": "&#xe61c;",
+          "href": "/page/list_zonghe",
+          "spread": false
+        },
+        {
+          "title": "部门信息",
+          "icon": "&#xe61c;",
+          "href": "/page/bumen",
+          "spread": false
+        },
+        {
+          "title": "员工信息",
+          "icon": "&#xe61c;",
+          "href": "/page/yuangon",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "入库管理",
+      "icon": "&#xe634;",
+      "href": "aa",
+      "spread": false,
+      "children": [
+        {
+          "title": "采购计划单",
+          "icon": "&#xe61c;",
+          "href": "/page/caigou_shenqing",
+          "spread": false
+        },
+        {
+          "title": "采购计划管理",
+          "icon": "&#xe61c;",
+          "href": "/page/caigou_order_manage",
+          "spread": false
+        },
+        {
+          "title": "采购进货单",
+          "icon": "&#xe61c;",
+          "href": "/page/caigou_jinhuo_order",
+          "spread": false
+        },
+        {
+          "title": "进货管理",
+          "icon": "&#xe61c;",
+          "href": "/page/list_jinhuo_order",
+          "spread": false
+        },
+        {
+          "title": "旧件/总成件入库",
+          "icon": "&#xe61c;",
+          "href": "/page/jiiujian_ruku",
+          "spread": false
+        },
+        {
+          "title": "入库记录",
+          "icon": "&#xe61c;",
+          "href": "/page/jiiujian_ruku_list",
+          "spread": false
+        },
+        {
+          "title": "采购退货单",
+          "icon": "&#xe61c;",
+          "href": "/page/caigou_tuihuo_shenqing",
+          "spread": false
+        },
+        {
+          "title": "采购退货管理",
+          "icon": "&#xe61c;",
+          "href": "/page/caigou_tuihuo_list",
+          "spread": false
+        },
+        {
+          "title": "智能补货",
+          "icon": "&#xe61c;",
+          "href": "/page/zhineng_buhuo",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "出库管理",
+      "icon": "&#xe634;",
+      "href": "aa",
+      "spread": false,
+      "children": [
+        {
+          "title": "物资领用",
+          "icon": "&#xe61c;",
+          "href": "/page/wuzhi_linyong",
+          "spread": false
+        },
+        {
+          "title": "领用订单管理",
+          "icon": "&#xe61c;",
+          "href": "/page/linyong_order_list",
+          "spread": false
+        },
+        {
+          "title": "其他出库单",
+          "icon": "&#xe61c;",
+          "href": "/page/qita_chuku",
+          "spread": false
+        },
+        {
+          "title": "其他出库管理",
+          "icon": "&#xe61c;",
+          "href": "/page/qita_chuku_list",
+          "spread": false
+        },
+        {
+          "title": "物资退库",
+          "icon": "&#xe61c;",
+          "href": "/page/wuzhi_tuiliao",
+          "spread": false
+        },
+        {
+          "title": "退库订单管理",
+          "icon": "&#xe61c;",
+          "href": "/page/tuiliao_order_list",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "库存管理",
+      "icon": "&#xe634;",
+      "href": "aa",
+      "spread": false,
+      "children": [
+        {
+          "title": "物资库存",
+          "icon": "&#xe61c;",
+          "href": "/page/cpkc",
+          "spread": false
+        },
+        {
+          "title": "物资调拨单",
+          "icon": "&#xe61c;",
+          "href": "/page/wuzhi_diaobo_order",
+          "spread": false
+        },
+        {
+          "title": "物资调拨管理",
+          "icon": "&#xe61c;",
+          "href": "/page/wuzhi_diaobo_list",
+          "spread": false
+        },
+        {
+          "title": "库存报损单",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_baosun_order",
+          "spread": false
+        },
+        {
+            "title": "库存报损管理",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_baosun_list",
+          "spread": false
+        },
+        {
+          "title": "库存报溢单",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_baoyi_order",
+          "spread": false
+        },
+        {
+          "title": "库存报溢管理",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_baoyi_list",
+          "spread": false
+        },
+        {
+          "title": "库存盘点单",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_pandian_order",
+          "spread": false
+        },
+        {
+          "title": "库存盘点管理",
+          "icon": "&#xe61c;",
+          "href": "/page/kucun_pandian_list",
+          "spread": false
+        },
+        {
+          "title": "物资拆分单",
+          "icon": "&#xe61c;",
+          "href": "/page/chanpin_caifen_order",
+          "spread": false
+        },
+        {
+          "title": "物资拆分管理",
+          "icon": "&#xe61c;",
+          "href": "/page/chanpin_caifen_list",
+          "spread": false
+        },
+        {
+          "title": "物资组装单",
+          "icon": "&#xe61c;",
+          "href": "/page/chanpin_zuzhuang_order",
+          "spread": false
+        },
+        {
+          "title": "物资组装管理",
+          "icon": "&#xe61c;",
+          "href": "/page/chanpin_zuzhuang_list",
+          "spread": false
+        },
+        {
+          "title": "物资流向",
+          "icon": "&#xe61c;",
+          "href": "/page/chanpin_liuxiang_list",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "财务报表管理",
+      "icon": "&#xe634;",
+      "href": "aa",
+      "spread": false,
+      "children": [
+        {
+          "title": "供应商预付款管理",
+          "icon": "&#xe61c;",
+          "href": "/page/gys_yufukuan",
+          "spread": false
+        },
+        {
+          "title": "供应商付款管理",
+          "icon": "&#xe61c;",
+          "href": "/page/gyf_fukuan",
+          "spread": false
+        }
+      ]
+    }
+  ],
+  "memberCenter": [
+    {
+      "title": "车辆管理",
+      "icon": "&#xe612;",
+      "href": "page/user/",
+      "spread": false,
+      "children": [
+        {
+          "title": "驾驶员档案管理",
+          "icon": "&#xe61c;",
+          "href": "/page/jsyda",
+          "spread": false
+        },
+        {
+          "title": "车辆档案管理",
+          "icon": "&#xe61c;",
+          "href": "/page/cheliang_dangan",
+          "spread": false
+        },
+        {
+          "title": "公务车档案管理",
+          "icon": "&#xe61c;",
+          "href": "/page/gongwc_dangan",
+          "spread": false
+        },
+        {
+            "title": "报废计划编制",
+          "icon": "&#xe61c;",
+          "href": "/page/baofei_jihua",
+          "spread": false
+        },
+        {
+          "title": "报废计划管理",
+          "icon": "&#xe61c;",
+          "href": "/page/baofei_jihua_list",
+          "spread": false
+        },
+        {
+          "title": "报废车辆管理",
+          "icon": "&#xe61c;",
+          "href": "/page/baofei_cheliang",
+          "spread": false
+        },
+        {
+          "title": "报废到期提醒",
+          "icon": "&#xe61c;",
+          "href": "/page/baofei_daoqi",
+          "spread": false
+        },
+        {
+          "title": "年审记录",
+          "icon": "&#xe61c;",
+          "href": "/page/nianshen_jilu",
+          "spread": false
+        },
+        {
+          "title": "年审到期提醒",
+          "icon": "&#xe61c;",
+          "href": "/page/nianshen_daoqi",
+          "spread": false
+        },
+        {
+          "title": "轮胎管理",
+          "icon": "&#xe61c;",
+          "href": "/page/luntai_guanli",
+          "spread": false
+        },
+        {
+          "title": "车辆加油登记",
+          "icon": "&#xe61c;",
+          "href": "/page/cheliang_jiayoudengji",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "维修保养",
+      "icon": "&#xe612;",
+      "href": "page/user/",
+      "spread": false,
+      "children": [
+        {
+          "title": "车辆维修",
+          "icon": "&#xe61c;",
+          "href": "/page/clwx",
+          "spread": false
+        },
+        {
+          "title": "维修单管理",
+          "icon": "&#xe61c;",
+          "href": "/page/wxdgl",
+          "spread": false
+        },
+        {
+          "title": "维修费用",
+          "icon": "&#xe61c;",
+          "href": "/page/wxfy",
+          "spread": false
+        },
+        {
+          "title": "一级保养提醒",
+          "icon": "&#xe61c;",
+          "href": "/page/yiji_baoyang_tixin",
+          "spread": false
+        },
+        {
+          "title": "二级保养提醒",
+          "icon": "&#xe61c;",
+          "href": "/page/erji_baoyang_tixin",
+          "spread": false
+        },
+        {
+          "title": "三级保养提醒",
+          "icon": "&#xe61c;",
+          "href": "/page/sanji_baoyang_tixin",
+          "spread": false
+        },
+        {
+          "title": "车辆保养",
+          "icon": "&#xe61c;",
+          "href": "/page/clby",
+          "spread": false
+        },
+        {
+          "title": "保养管理",
+          "icon": "&#xe61c;",
+          "href": "/page/bygl",
+          "spread": false
+        },
+        {
+          "title": "保养里程分类",
+          "icon": "&#xe61c;",
+          "href": "/page/byglfl",
+          "spread": false
+        },
+        {
+          "title": "维保耗材明细",
+          "icon": "&#xe61c;",
+          "href": "/page/wbhcmx",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "事故管理",
+      "icon": "&#xe612;",
+      "href": "page/user/",
+      "spread": false,
+      "children": [
+        {
+          "title": "交通事故登记",
+          "icon": "&#xe61c;",
+          "href": "/page/jtsgdj",
+          "spread": false
+        },
+        {
+          "title": "交通事故登记表",
+          "icon": "&#xe61c;",
+          "href": "/page/jtsgdjb",
+          "spread": false
+        }
+      ]
+    }
+  ],
+  "seraphApi": [
+    {
+      "title": "权限管理",
+      "icon": "icon-mokuai",
+      "spread": false,
+      "children": [
+        {
+          "title": "角色管理",
+          "icon": "&#xe61c;",
+          "href": "/page/jsgl",
+          "spread": false
+        },
+        {
+          "title": "菜单管理",
+          "icon": "&#xe61c;",
+          "href": "/page/cdgl",
+          "spread": false
+        },
+        {
+          "title": "操作日志",
+          "icon": "icon-log",
+          "href": "page/systemSetting/logs.html",
+          "spread": false
+        }
+      ]
+    }
+  ]
+}
+
+

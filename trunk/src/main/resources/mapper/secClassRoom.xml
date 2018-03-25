@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="secClassRoomMapper">
+
+
+    <!-- 获取第二课堂模块下拉 -->
+    <select id="getZdMkForList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT DISTINCT m.* FROM mk_version v
+        JOIN xf_zd_mk m ON v.mkId = m.mk_id
+        <if test="version!=null and version!=''">
+        WHERE v.version = #{version}
+        </if>
+    </select>
+
+    <!-- 获取第二课堂项目下拉 -->
+    <select id="getZdXmForList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT xm_id,xm_name,xm_type FROM xf_zd_xm
+        WHERE mk_id = #{mkId}
+        ORDER BY xm_id
+    </select>
+
+    <!-- 获取第二课堂级别下拉 -->
+    <select id="getZdJbForList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT jb_id,jb_name FROM xf_zd_jb
+        WHERE xm_id = #{xmId}
+        ORDER BY jb_id
+    </select>
+
+
+    <!-- 获取第二课堂模块名称 -->
+    <select id="getZdMkName" resultType="string" parameterType="java.util.Map">
+        SELECT mk_name FROM xf_zd_mk WHERE mk_id = #{mkId}
+    </select>
+
+    <!-- 获取第二课堂项目名称 -->
+    <select id="getZdXmName" resultType="string" parameterType="java.util.Map">
+        SELECT xm_name FROM xf_zd_xm
+        WHERE xm_id = #{xmId}
+    </select>
+
+    <!-- 获取第二课堂级别名称 -->
+    <select id="getZdJbName" resultType="string" parameterType="java.util.Map">
+        SELECT jb_name FROM xf_zd_jb
+        WHERE jb_id = #{jbId}
+    </select>
+
+    <!-- 获取第二课堂要求以及分数下拉 -->
+    <select id="getZdYqForList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT yq_id,yq_name,yq_xf FROM xf_zd_yq
+        WHERE jb_id = #{jbId}
+        ORDER BY yq_id
+    </select>
+
+    <!-- 新增第二课堂流程申请表 -->
+    <insert id="saveClassRoom" parameterType="java.util.Map">
+      insert into flow_secclassroom (
+        order_id,
+        task_id,
+        mk_name,
+        xm_name,
+        jb_name,
+        start_xf,
+        end_xf,
+        cl_url,
+        description,
+        operate_time,
+        operator,
+        bossOperator,
+        endOperator,
+        version
+      )
+      values (
+        #{orderId},
+        #{taskId},
+        #{mkName},
+        #{xmName},
+        #{jbName},
+        #{startXf},
+        #{startXf},
+        #{clUrl},
+        #{description},
+        now(),
+        #{operator},
+        #{bossOperator},
+        #{endOperator},
+        #{version}
+      )
+    </insert>
+
+
+    <!-- 修改第二课堂流程申请表 -->
+    <update id="updateEndClassRoom" parameterType="java.util.Map">
+        UPDATE flow_secclassroom
+        <set>
+            <if test="mkName!=null and mkName!=''">
+             mk_name = #{mkName},
+            </if>
+            <if test="xmName!=null and xmName!=''">
+             xm_name = #{xmName},
+            </if>
+            <if test="jbName!=null and jbName!=''">
+              jb_name = #{jbName},
+            </if>
+            <if test="startXf!=null and startXf!=''">
+             start_xf = #{startXf},
+            </if>
+            <if test="clUrl!=null and clUrl!=''">
+              cl_url = #{clUrl},
+            </if>
+            <if test="description!=null and description!=''">
+              description = #{description},
+            </if>
+            <if test="endXf!=null and endXf!=''">
+                end_xf = #{endXf}
+            </if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+
+
+
+    <!-- 获取第二课堂申请表 -->
+    <select id="getNewApply" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT * FROM flow_secclassroom
+        WHERE order_id = #{orderId}
+    </select>
+
+
+    <!-- 获取第二课堂模块列表 -->
+    <select id="getXfglList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            m.mk_id mkId,m.mk_name mkName,
+            x.xm_id xmId,x.xm_name xmName,x.xm_type xmType,
+            j.jb_id jbId,j.jb_name jbName,
+            y.yq_id yqId,y.yq_name yqName,y.yq_xf yqXf,
+            v.version
+            FROM xf_zd_yq y
+            JOIN xf_zd_jb j ON j.jb_id = y.jb_id
+            JOIN xf_zd_xm x ON x.xm_id = j.xm_id
+            JOIN xf_zd_mk m ON m.mk_id = x.mk_id
+            JOIN mk_version v ON v.mkId = m.mk_id
+            WHERE v.version = #{version}
+            ORDER BY y.yq_id DESC
+        LIMIT #{start} , #{limit}
+    </select>
+
+    <!-- 获取第二课堂模块列表count -->
+    <select id="getXfglListCount" resultType="int" parameterType="java.util.Map">
+        SELECT
+            count(1)
+            FROM xf_zd_yq y
+            JOIN xf_zd_jb j ON j.jb_id = y.jb_id
+            JOIN xf_zd_xm x ON x.xm_id = j.xm_id
+            JOIN xf_zd_mk m ON m.mk_id = x.mk_id
+            JOIN mk_version v ON v.mkId = m.mk_id
+            WHERE v.version = #{version}
+    </select>
+
+
+
+    <!-- 删除学分申请 -->
+    <delete id="deleteClassRoom"  parameterType="java.util.Map">
+        DELETE FROM flow_secclassroom
+        WHERE order_id = #{orderId}
+    </delete>
+
+    <!-- 认定表相关start -->
+
+    <!-- 新增模块 -->
+    <insert id="saveMk" parameterType="java.util.Map">
+        insert into xf_zd_mk (mk_name)
+        values (
+        #{mkName}
+        )
+    </insert>
+
+    <!-- 获取第二课堂模块id -->
+    <select id="getMkIdByName" resultType="string" parameterType="java.util.Map">
+        SELECT mk_Id FROM xf_zd_mk WHERE mk_name = #{mkName}
+    </select>
+
+    <!-- 修改模块 -->
+    <update id="updateMk" parameterType="java.util.Map">
+        UPDATE xf_zd_mk
+        <set>
+           mk_name = #{mkName}
+        </set>
+        WHERE mk_id = #{mkId}
+    </update>
+    <!-- 新增模块版本关联 -->
+    <insert id="saveMkVersion" parameterType="java.util.Map">
+        insert into mk_version (
+        mkId,
+        version
+        )
+        values (
+        #{mkId},
+        #{version}
+        )
+    </insert>
+
+    <!-- 新增项目 -->
+    <insert id="saveXm" parameterType="java.util.Map">
+        insert into xf_zd_xm (xm_name,mk_id,xm_type)
+        values (
+        #{xmName},#{mkId},#{xmType}
+        )
+    </insert>
+
+    <!-- 查询xmid -->
+    <select id="getXmId" resultType="string" parameterType="java.util.Map">
+        SELECT xm_id FROM xf_zd_xm WHERE xm_name = #{xmName}
+        AND mk_id = #{mkId}
+        AND xm_type = #{xmType}
+    </select>
+
+    <!-- 修改项目 -->
+    <update id="updateXm" parameterType="java.util.Map">
+        UPDATE xf_zd_xm
+        <set>
+            xm_name = #{xmName},
+            <if test="mkId!=null and mkId!=''">
+                mk_id = #{mkId},
+            </if>
+            xm_type = #{xmType}
+        </set>
+        WHERE xm_id = #{xmId}
+    </update>
+
+    <!-- 新增级别 -->
+    <insert id="saveJb" parameterType="java.util.Map">
+        insert into xf_zd_jb (jb_name,xm_id)
+        values (
+        #{jbName},#{xmId}
+        )
+    </insert>
+    <!-- 查询jbid -->
+    <select id="getJbId" resultType="string" parameterType="java.util.Map">
+        SELECT jb_id FROM xf_zd_jb WHERE jb_name = #{jbName}
+        AND xm_id = #{xmId}
+    </select>
+
+    <!-- 修改级别 -->
+    <update id="updateJb" parameterType="java.util.Map">
+        UPDATE xf_zd_jb
+        <set>
+            <if test="xmId!=null and xmId!=''">
+                xm_id = #{xmId},
+            </if>
+            jb_name = #{jbName}
+        </set>
+        WHERE jb_id = #{jbId}
+    </update>
+
+    <!-- 新增要求以及学分 -->
+    <insert id="saveYqXf" parameterType="java.util.Map">
+        insert into xf_zd_yq (yq_name,jb_id,yq_xf)
+        values (
+        #{yqName},#{jbId},#{yqXf}
+        )
+    </insert>
+
+
+    <!-- 修改要求以及学分 -->
+    <update id="updateYqXf" parameterType="java.util.Map">
+        UPDATE xf_zd_yq
+        <set>
+            <if test="jbId!=null and jbId!=''">
+                jb_id = #{jbId},
+            </if>
+            yq_name = #{yqName},
+            yq_xf = #{yqXf}
+        </set>
+        WHERE yq_id = #{yqId}
+    </update>
+    <!-- 获取第二课堂版本 -->
+    <select id="getVersionSelect" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT version FROM version ORDER  by version DESC
+    </select>
+
+    <!-- 新增级别 -->
+    <insert id="saveVersion" parameterType="java.util.Map">
+        insert into version (version)
+        values (
+        #{version}
+        )
+    </insert>
+
+    <!-- 认定表相关end -->
+
+
+
+
+
+
+
+
+</mapper>

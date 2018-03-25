@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InterfaceMapper">
+
+	<!-- 根据条件查询单条接口记录 -->
+	<select id ="getInterfaceEntityByParams" resultType="com.nuoplus.system.model.InterfaceEntity" parameterType="map">
+		select
+		INTF_ID intfId,
+		INTF_NM intfNm,
+		INTF_CLA_NM intfClaNm,
+		INTF_PATH intfPath,
+		RSTFL_REQST_MTHD_NM rstflReqstMthdNm,
+		SYS_STS_CD sysStsCD,
+		CRT_TIME crtTime
+		from bs_interface
+		<where>
+			<if test="intfPath!=null and rstflReqstMthdNm!=null">AND INTF_PATH = #{intfPath} AND RSTFL_REQST_MTHD_NM=#{rstflReqstMthdNm}</if>
+			AND SYS_STS_CD='1'
+		</where>
+	</select>
+
+
+
+
+	<!-- 获取当前所有接口 -->
+	<select id="getAllIntfList" resultType="java.util.Map" parameterType="java.util.Map">
+		select
+		 	intf_id intfId,
+			intf_nm intfNm,
+			intf_cla_nm intfClaNm,
+			intf_path intfPath,
+			rstfl_reqst_mthd_nm resflReqstMthdNm,
+			sys_sts_cd sysStsCd,
+			crt_time crtTime,
+			in_params inParams,
+			out_params outParams
+		 FROM bs_interface
+		ORDER BY crt_time DESC
+		LIMIT #{start} , #{limit}
+	</select>
+
+	<!-- 获取当前所有接口count -->
+	<select id="getAllIntfListCount" resultType="int" parameterType="java.util.Map">
+		select
+		count(1)
+		FROM bs_interface
+	</select>
+
+
+	<!-- 根据条件查询用户记录 -->
+	<select id ="getUserByParams" resultType="java.util.Map" parameterType="java.util.Map">
+		select *
+		from sys_user
+		<where>
+			<if test="username!=null and password!=null">AND username = #{userName} AND password=#{password}</if>
+			AND locked='0'
+		</where>
+	</select>
+
+</mapper>

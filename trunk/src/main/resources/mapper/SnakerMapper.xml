@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SnakerMapper">
+
+    <!-- 修改流程 -->
+    <update id="updateProcess" parameterType="java.util.Map">
+        UPDATE wf_process
+        <set>
+                state='1'
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+    <!-- 获取当前模块最新流程 -->
+    <select id="getNewProcess" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT * FROM wf_process
+        where state = '1' AND display_Name LIKE '%${displayName}%'
+        ORDER BY version DESC LIMIT 0,1
+    </select>
+
+
+    <!-- 获取单条流程历史记录 -->
+    <select id="getHisTaskForList" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT display_Name displayName,operator,finish_Time finishTime,variable
+        FROM wf_hist_task
+        WHERE order_Id = #{orderId}
+        <if test="parentTaskId!=null and parentTaskId!=''">
+            AND parent_Task_Id = #{parentTaskId}
+        </if>
+        ORDER BY finish_Time
+    </select>
+
+
+    <!-- 获取当前用户待办事项 -->
+    <select id="getHomeTaskList" resultType="java.util.Map" parameterType="java.util.Map">
+        select distinct o.process_Id processId, t.order_Id orderId, t.id as id, t.id as taskId, o.creator,
+        o.create_Time createTime, o.variable,p.display_Name processName,t.display_Name as taskName, t.action_Url actionUrl
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        left join wf_process p on p.id = o.process_id
+        where t.task_Type = '0'
+        <if test="creator!=null and creator!=''">
+            AND o.creator = #{creator}
+        </if>
+        <if test="actorId!=null and actorId!=''">
+            and ta.actor_Id = #{actorId}
+        </if>
+        <if test="processName!=null and processName!=''">
+            AND p.display_Name LIKE '%${processName}%'
+        </if>
+        ORDER BY o.create_Time DESC
+        LIMIT #{start} , #{limit}
+    </select>
+
+    <!-- 获取当前用户待办事项count -->
+    <select id="getHomeTaskListCount" resultType="int" parameterType="java.util.Map">
+        select distinct count(1)
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        left join wf_process p on p.id = o.process_id
+        where t.task_Type = '0'
+        <if test="creator!=null and creator!=''">
+            AND o.creator = #{creator}
+        </if>
+        <if test="actorId!=null and actorId!=''">
+            and ta.actor_Id = #{actorId}
+        </if>
+        <if test="processName!=null and processName!=''">
+            AND p.display_Name LIKE '%${processName}%'
+        </if>
+    </select>
+
+
+    <!-- 获取已完结流程信息 -->
+    <select id="getEndOrderList" resultType="java.util.Map" parameterType="java.util.Map">
+        select o.id orderId,o.process_Id processId,p.display_Name processName,o.creator,o.create_Time createTime,o.end_Time endTime,o.variable
+        from wf_hist_order o
+        left join wf_process p on p.id = o.process_id
+        WHERE o.order_State = '0'
+        <if test="creator!=null and creator!=''">
+            AND o.creator = #{creator}
+        </if>
+        <if test="processName!=null and processName!=''">
+            AND p.display_Name LIKE '%${processName}%'
+        </if>
+        ORDER BY o.create_Time DESC
+        LIMIT #{start} , #{limit}
+    </select>
+
+    <!-- 获取已完结流程信息count -->
+    <select id="getEndOrderListCount" resultType="int" parameterType="java.util.Map">
+        select count(1)
+        from wf_hist_order o
+        left join wf_process p on p.id = o.process_id
+        WHERE o.order_State = '0'
+        <if test="creator!=null and creator!=''">
+            AND o.creator = #{creator}
+        </if>
+        <if test="processName!=null and processName!=''">
+            AND p.display_Name LIKE '%${processName}%'
+        </if>
+    </select>
+
+    <!-- 获取当前用户最新orderId以及taskId，本方法前提为单点登录，不支持单用户并发 -->
+    <select id="getOrdIdAndTaskId" resultType="java.util.Map" parameterType="java.util.Map">
+        select distinct  t.order_Id orderId, t.id taskId
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        left join wf_process p on p.id = o.process_id
+        where t.task_Type = '0'
+        AND o.creator = #{creator}
+        AND p.id = #{processId}
+        ORDER BY o.create_Time DESC,t.create_Time DESC
+        LIMIT 0 ,1
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delHisTaskActor" parameterType="java.util.Map">
+        DELETE FROM wf_hist_task_actor WHERE task_Id in (SELECT id FROM wf_hist_task WHERE order_Id = #{orderId});
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delHisTask" parameterType="java.util.Map">
+        DELETE FROM wf_hist_task WHERE order_Id = #{orderId};
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delTaskOrder" parameterType="java.util.Map">
+        DELETE FROM wf_hist_order where id = #{orderId};
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delTaskActor" parameterType="java.util.Map">
+        DELETE FROM wf_task_actor WHERE task_Id = (SELECT id FROM wf_task WHERE order_Id = #{orderId});
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delTask" parameterType="java.util.Map">
+        DELETE FROM wf_task WHERE order_Id = #{orderId};
+    </select>
+
+
+    <!-- 删除流程冗余信息 -->
+    <select id="delOrder" parameterType="java.util.Map">
+        DELETE FROM wf_order WHERE id = #{orderId};
+    </select>
+
+
+    <!-- 通过orderId获取流程信息 -->
+    <select id="getTaskByOrderId" resultType="java.util.Map" parameterType="java.util.Map">
+        select distinct o.process_Id processId, p.display_Name processName,t.order_Id orderId, t.id as taskId,t.display_Name taskName
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        left join wf_process p on p.id = o.process_id
+        where t.task_Type = '0' AND t.order_Id = #{orderId}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoplus.system.dao.SysUserRolesMapper">
+  <resultMap id="BaseResultMap" type="com.nuoplus.system.model.SysUserRoles">
+
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <id column="role_id" jdbcType="BIGINT" property="roleId" />
+    <id column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    user_id, role_id, sort
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.nuoplus.system.model.SysUserRoles">
+
+    delete from sys_user_roles
+    where user_id = #{userId,jdbcType=BIGINT}
+      and role_id = #{roleId,jdbcType=BIGINT}
+      and sort = #{sort,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nuoplus.system.model.SysUserRoles">
+
+    insert into sys_user_roles (user_id, role_id, sort
+      )
+    values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoplus.system.model.SysUserRoles">
+
+    insert into sys_user_roles
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteRolesByUser" parameterType="com.nuoplus.system.model.SysUserRoles">
+    delete from sys_user_roles
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+
+  <select id="findByUser"  parameterType="java.lang.Long"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+</mapper>
